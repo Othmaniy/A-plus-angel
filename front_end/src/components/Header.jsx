@@ -1,23 +1,56 @@
-import React from "react";
+
+import { Link } from "react-router-dom"; // ✅ Correct
+
+import {
+  Navbar,
+  NavBody,
+  NavItems,
+  MobileNav,
+  MobileNavHeader,
+  MobileNavToggle,
+  MobileNavMenu,
+  NavbarLogo,
+  NavbarButton,
+} from "./ui/Navbar";
+import { useState } from "react";
 
 function Header() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  
+    const navItems = [
+      { name: "Home", link: "/" },
+      { name: "About", link: "/about" },
+      { name: "Contact", link: "/contact" },
+    ];
+  
   return (
-    <>
-      <section className="flex justify-evenly text-gray-400 h-12 w-screen  fixed items-center text-xl z-30">
-        <div>logo</div>
-        <div >
-          <ul className="flex justify-evenly gap-12" >
-            
-            <li className=""><a href="">Home</a></li>
-            <li className="m"><a href="">about us</a></li>
-            <li className="m"><a href="">team</a></li>
-            <li className="m"><a href="">contact us</a></li>
-          </ul>
-        </div>
-        <div className="text-black">signup/explore</div>
-      </section>
-    </>
-  );
+    <div>
+     <Navbar>
+            <NavBody visible={true}>
+              <NavbarLogo />
+              <NavItems items={navItems} />
+              <NavbarButton href="/signup">Sign Up</NavbarButton>
+            </NavBody>
+    
+            <MobileNav visible={true}>
+              <MobileNavHeader>
+                <NavbarLogo />
+                <MobileNavToggle
+                  isOpen={mobileOpen}
+                  onClick={() => setMobileOpen(!mobileOpen)}
+                />
+              </MobileNavHeader>
+              <MobileNavMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)}>
+                {navItems.map((item, i) => (
+                  <Link key={i} to={item.link}>
+                    {item.name}
+                  </Link>
+                ))}
+              </MobileNavMenu>
+            </MobileNav>
+          </Navbar>
+    </div>
+  )
 }
 
-export default Header;
+export default Header
